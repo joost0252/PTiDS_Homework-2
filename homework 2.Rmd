@@ -1,0 +1,92 @@
+---
+title: "homework-2"
+author: "Amina"
+date: "2022-10-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## __TO DO__ list
+
+Exo 1 : Amina
+Exo 2 : Joost 
+Exo 3 : Edward
+
+- Create 3 different Branch in order to merge to the main at the end. 
+- Each person work in their part which is described
+- Write in detail the process of the task 
+
+
+
+## Requirements :warning:
+
+This homework **must** be accomplished using the appropriate GitHub template and respect the following requirements:
+
+- All members of the group must commit at least once.
+- All commit messages must be reasonably clear and meaningful.
+- Your GitHub repository must include at least the following:
+  + One issue containing some form of __TO DO__ list.
+  + One pull request followed by a merging.
+- Organization (separation of work,...) and progress for your group must appear clearly in __GitHub Projects__.
+
+You can create one or several RMarkdown files to answer the following problems:
+
+
+#### Problem statement
+
+Your boss would like that you analyze some business data. Let $X_1,\dots,X_n$ represents $n$ data points. Suppose you are interested in a statistic, say $\hat{\theta}$. In particular, we consider the mean, the median and the max. You are asked not only to report the statistics, but also an estimator of their variances.
+
+In order to accomplish this task, you will implement the bootstrap. The bootstrap is a well known method in statistics since Efron's seminal paper in 1979. The bootstrap is easy to implement and straightforward to use. There exist many different schemes for the bootstrap, we present the simplest form:
+
+1.  Compute the statistic on the sample: $\hat{\theta} = g(x_1,\dots,x_n)$.
+2.  Create a new sample $x_1^\ast,\dots,x_n^\ast$ by drawing data from the original sample **at random with replacement**. This new sample is called a *bootstrapped sample*.
+3.  Compute the statistic on the bootstrapped sample: $\hat{\theta}^\ast = g(x_1^\ast,\dots,x_n^\ast)$.
+4.  Repeat 2. and 3. $B$ times.
+5.  Compute the unbiased estimator of the variance: $$\frac{1}{B-1}\sum_{b=1}(\hat{\theta}^\ast_{b}-\hat{\theta})^2.$$
+
+
+1.  Load the dataset `supermarket_sales.csv`. We are interested in the column `Unit.price` and $\hat{\theta}$ is the mean. Using a `for` loop, compute the unbiased estimator of the variance with $B=1'000$.
+
+```{r }
+supermarket <- read.csv("supermarket_sales.csv")
+is.data.frame(supermarket)
+unitPrice <- supermarket$Unit.price
+têta_hat <- mean(unitPrice)
+sd <- sd(unitPrice)
+
+#Using a `for` loop, compute the unbiased estimator of the variance with B=1'000. 
+"We're going to use Bessel's correction to estimate the variance and use the known unitPrice mean"
+
+variance_hat <- NULL
+for (i in 1:1000) {
+    variance_hat <- (1/(B-1)\sum_{b=1}(\hat{\theta}^\ast_{b}-\hat{\theta})^2.
+}
+mean(variance)
+`````
+
+2.  Propose an alternative solution without any control structure (i.e., no `for` loop, `while` loop, ...). You can for example construct a matrix and use `colMeans()` or `rowMeans()` functions.
+
+```{r }
+
+```
+
+3.  Compare the performances of your solutions at 1. and 2. by:
+
+    a\. Profiling your two implementations. Use `profvis::profvis({...})` where `...` is replaced by your code. Comment on the comparison, in particular the memory usage and computation time.  
+    b. Benchmarking your two implementations. Use `microbenchmark::microbenchmark({...},{...})` where `...` is to be replaced by your implementations. Comment the results.
+
+```{r }
+
+```
+4.  Repeat 2. with the median as the statistic of interest. You are still required not use any control structures. There are no `colMedians()` or `rowMedians()` functions. Instead, use the `apply` function. Comment the results in comparison with the mean.
+```{r }
+
+```
+
+5.  Repeat 1. with the max as the statistic of interest. What do you observe? Comment.
+```{r }
+
+```
