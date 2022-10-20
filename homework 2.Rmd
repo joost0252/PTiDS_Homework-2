@@ -53,24 +53,121 @@ In order to accomplish this task, you will implement the bootstrap. The bootstra
 ```{r }
 supermarket <- read.csv("supermarket_sales.csv")
 is.data.frame(supermarket)
-unitPrice <- supermarket$Unit.price
-têta_hat <- mean(unitPrice)
-sd <- sd(unitPrice)
+unitPrice <- as.matrix(supermarket[,7])
+#unitPrice <- supermarket[,c(1,7)]
+
+# mean statistic on the sample 
+têta_hat <- mean(unitPrice)   # mean of unit price (theoretical)
+n = 500                       #sample size
+B <- 1000                     #number of iteration
+sd_asymptotic <- sd(unitPrice)
+
+```
+
+```{r Bootstrap with for loop }
+
+# storage
+
+estimator_loop <- rep(0,B)        #save the unbiased estimator of var
+set.seed(1234)
+# Bootstrap with a for loop 
+for (i in 1:B) {
+  
+  #resample the data with remplacement
+  boot_resample <- sample(unitPrice, n, replace = TRUE)   # create a new column resample
+  
+  #Compute the unbiased estimator
+  boot_beta <- (1/(B-1))*(sum(mean(boot_resample) - têta_hat)^2)
+  estimator_loop[i] <- boot_beta                      # bootstrap estimate 
+}
+
+# Standard error
+sd_loop <- sd(estimator_loop)
+
+ ###################### ######################## OR ###################### ######################
+
+têta_hat_loop <- rep(0,B)        #save the unbiased estimator of var
+set.seed(1234)
+# Bootstrap with a for loop 
+for (i in 1:B) {
+  
+  #resample the data with remplacement
+  boot_resample2 <- sample(unitPrice, n, replace = TRUE)   # create a new column resample
+  
+  #Compute the unbiased estimator
+  boot_beta2 <- mean(boot_resample2)
+  têta_hat_loop[i] <- boot_beta2                      # bootstrap estimate 
+}
+
+têta_hat_loop_vec <- as.matrix(têta_hat_loop)
+têta_hat <- rep(têta_hat,times=1000)
+#estimator_loop2<- (1/(B-1))*(sum(têta_hat_loop) - têta_hat)^2
+
+estimator_loop2 <-(1/(B-1))*(rowSums(têta_hat_loop_vec- têta_hat)^2)
+
+# Standard error
+sd_loop <- sd(estimator_loop2)
+
+
+
+"
+library(dplyr)
+library(ggplot2)
+
+table_1 <- data_frame(num = 1:B) %>% 
+    group_by(num) %>% 
+    mutate(means = mean(sample(unitPrice, replace = TRUE))) %>% 
+    ggplot(aes(x = means)) +
+    geom_freqpoly()
+
+table_1
+
 
 #Using a `for` loop, compute the unbiased estimator of the variance with B=1'000. 
-"We're going to use Bessel's correction to estimate the variance and use the known unitPrice mean"
 
-variance_hat <- NULL
-for (i in 1:1000) {
-    variance_hat <- (1/(B-1)\sum_{b=1}(\hat{\theta}^\ast_{b}-\hat{\theta})^2.
+for (b in B) {
+  initial <- 1
+  end <- 100000
+  k <- c(initial:end)
+  
+  for (n in k) {
+    teta_diff_square <- (têta_hat_b - têta_hat)^2
+    sum_teta <- sum(teta_diff_square)
+    value <- 1/(B-1)*sum_teta 
+    }
 }
-mean(variance)
-`````
+
+print(value)
+"
+
+```
+
+To do so we need firt to determine a boostrap sample. Since Bootstrapping is the process of resampling with replacement, we're going to define the boostraped sample as follow: 
+" put a table of the boostraped"
 
 2.  Propose an alternative solution without any control structure (i.e., no `for` loop, `while` loop, ...). You can for example construct a matrix and use `colMeans()` or `rowMeans()` functions.
 
-```{r }
+```{r Bootstrapping without  control structure}
+library(bootstrap)
+## Bootstrap function needs x (a vector), nboot (number of bootstrap) times by re sampling 1000 time. 
+#têta_hat <- mean(unitPrice)   # mean of unit price (theoretical)
+#n = 500                       #sample size
 
+B <- 1000                     #number of iteration
+set.seed(1234)
+theta <- function(unitPrice){mean(unitPrice)} 
+
+estimator_noloop <- rep(0,B)
+
+k <- bootstrap(unitPrice,B, theta)
+teta_hat_b <- as.matrix(k$thetastar)
+
+#create a vector of teta_hat
+
+estimator_noloop <-(1/(B-1))*(rowSums(teta_hat_b- têta_hat)^2)
+
+# Standard error
+sd_noloop <- sd(estimator_noloop)
 ```
 
 3.  Compare the performances of your solutions at 1. and 2. by:
@@ -78,12 +175,60 @@ mean(variance)
     a\. Profiling your two implementations. Use `profvis::profvis({...})` where `...` is replaced by your code. Comment on the comparison, in particular the memory usage and computation time.  
     b. Benchmarking your two implementations. Use `microbenchmark::microbenchmark({...},{...})` where `...` is to be replaced by your implementations. Comment the results.
 
+**Profiling Bootstrap with for loop **
 ```{r }
+#3.a\. Profiling your two implementations. Use `profvis::profvis({...})` where `...` is replaced by your code. Comment on the comparison, in particular the memory usage and computation time.  
+
+# Profiling Bootstrap with a for loop 
+profvis::profvis({
+  
+têta_hat_loop <- rep(0,B)        #save the unbiased estimator of var
+set.seed(1234)
+# Bootstrap with a for loop 
+for (i in 1:B) {
+  
+  #resample the data with remplacement
+  boot_resample2 <- sample(unitPrice, n, replace = TRUE)   # create a new column resample
+  
+  #Compute the unbiased estimator
+  boot_beta2 <- mean(boot_resample2)
+  têta_hat_loop[i] <- boot_beta2                      # bootstrap estimate 
+}
+
+têta_hat_loop_vec <- as.matrix(têta_hat_loop)
+têta_hat <- rep(têta_hat,times=1000)
+#estimator_loop2<- (1/(B-1))*(sum(têta_hat_loop) - têta_hat)^2
+
+estimator_loop2 <-(1/(B-1))*(rowSums(têta_hat_loop_vec- têta_hat)^2)
+}) 
+```
+**Profiling Bootstrap without loop **
+```{r }
+# Profiling Bootstrap without loop 
+
+profvis::profvis({
+  B <- 1000                     #number of iteration
+  set.seed(1234)
+  theta <- function(unitPrice){mean(unitPrice)} 
+  
+  estimator_noloop <- rep(0,B)
+  
+  k <- bootstrap(unitPrice,B, theta)
+  teta_hat_b <- as.matrix(k$thetastar)     #create a matrix of teta_hat
+  
+  estimator_noloop <-(1/(B-1))*(rowSums(teta_hat_b- têta_hat)^2)})
 
 ```
+
 4.  Repeat 2. with the median as the statistic of interest. You are still required not use any control structures. There are no `colMedians()` or `rowMedians()` functions. Instead, use the `apply` function. Comment the results in comparison with the mean.
 ```{r }
+"Create nBS bootstrap 10x10 matrices (I'm using set.seed(...) to ensure reproducibility of sample data). Resulting matrices are stored in a list.
 
+nBS <- 1000;
+set.seed(2017);
+lst <- lapply(1:nBS, function(x) 
+    matrix(rnorm(10 * 10, mean = 0, sd = 1), nrow = 10, ncol = 10));
+"
 ```
 
 5.  Repeat 1. with the max as the statistic of interest. What do you observe? Comment.
