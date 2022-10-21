@@ -1,39 +1,16 @@
 ---
 title: "homework-2"
-author: "Amina"
-date: "2022-10-14"
+author: "Amina Mohammed (17301920), Joost Dijkstra (),Edward Tandia (17310806)"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
+```{r, echo = FALSE, include = FALSE, message = FALSE}
+source(here::here("Setup.R"))
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-## __TO DO__ list
-
-Exo 1 : Amina
-Exo 2 : Joost 
-Exo 3 : Edward
-
-- Create 3 different Branch in order to merge to the main at the end. 
-- Each person work in their part which is described
-- Write in detail the process of the task 
-
-
-
-## Requirements :warning:
-
-This homework **must** be accomplished using the appropriate GitHub template and respect the following requirements:
-
-- All members of the group must commit at least once.
-- All commit messages must be reasonably clear and meaningful.
-- Your GitHub repository must include at least the following:
-  + One issue containing some form of __TO DO__ list.
-  + One pull request followed by a merging.
-- Organization (separation of work,...) and progress for your group must appear clearly in __GitHub Projects__.
-
-You can create one or several RMarkdown files to answer the following problems:
-
 
 #### Problem 1. statement
 
@@ -47,7 +24,7 @@ In order to accomplish this task, you will implement the bootstrap. The bootstra
 4.  Repeat 2. and 3. $B$ times.
 5.  Compute the unbiased estimator of the variance: $$\frac{1}{B-1}\sum_{b=1}(\hat{\theta}^\ast_{b}-\hat{\theta})^2.$$
 
-
+___Answers Problem 1___
 ```{r echo = FALSE, include = FALSE, message = FALSE}
 supermarket <- read.csv("supermarket_sales.csv")
 unitPrice <- as.matrix(supermarket[,7])
@@ -76,7 +53,7 @@ kable(head(tableStatisticalvalue), booktabs = TRUE) %>%
 ```
 
 
-Question 1.  Load the dataset `supermarket_sales.csv`. We are interested in the column `Unit.price` and $\hat{\theta}$ is the mean. Using a `for` loop, compute the unbiased estimator of the variance with $B=1'000$.
+**Question 1.**  Load the dataset `supermarket_sales.csv`. We are interested in the column `Unit.price` and $\hat{\theta}$ is the mean. Using a `for` loop, compute the unbiased estimator of the variance with $B=1'000$.
 
 
 ```{r Bootstrap with for loop mean}
@@ -92,12 +69,12 @@ for (i in 1:B) {
 estimator_loop <-(1/(B-1))*(sum(têta_hat_loop- têta_hat_mean)^2)
 estimator_loop
 ```
-Answer 1 : The unbiased estimator of the variance with $B=1'000$ is *estimator_loop*
+**Answer 1 :** The unbiased estimator of the variance with $B=1'000$ is *estimator_loop*
 
 **Question 2. ** Propose an alternative solution without any control structure (i.e., no `for` loop, `while` loop, ...). You can for example construct a matrix and use `colMeans()` or `rowMeans()` functions.
 
 ```{r Bootstrapping without control structure}
-library(bootstrap)
+"library(bootstrap)
 matrice <- matrix(ncol = B,nrow=B)
 
 #matrice <-mcopy paste the colum btimes
@@ -115,10 +92,10 @@ teta_hat_noloop <- boots_noloop$thetastar
 
 estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat)^2)
 estimator_noloop
-
+"
 ```
 
-Answer 2: The unbiased estimator of the variance with $B=1'000$ is *estimator_noloop*
+**Answer 2 :** The unbiased estimator of the variance with $B=1'000$ is *estimator_noloop*
 
 **Question 3**.  Compare the performances of your solutions at 1. and 2. by:
 
@@ -146,12 +123,13 @@ estimator_loop
 ```
 
 ```{r }
+"
 # Profiling Bootstrap without loop 
 set.seed(123)
 profvis::profvis({
 
   })
-
+"
 ```
 
 **Answer 3.a**:  The memory usage and computation time for the Bootstrap with control structure are : 
@@ -168,6 +146,22 @@ We take less time in the case of bootstrapping with / without control structure.
 
 **b.** Benchmarking your two implementations. Use `microbenchmark::microbenchmark({...},{...}). Comment the results.
 
+```{r}
+"
+microbenchmark::microbenchmark({
+  têta_hat_loop <- rep(0,B)     
+  for (i in 1:B) {
+  
+  têta_hat_loop[i] <- mean(sample(unitPrice, replace = TRUE))               
+}
+
+estimator_loop <-(1/(B-1))*(sum(têta_hat_loop- têta_hat_mean)^2)
+estimator_loop},
+
+{...})
+"
+
+```
 **Answer 3.b**:
 
 **Question 4.**  Repeat 2. with the *median* as the statistic of interest. You are still required not use any control structures. There are no `colMedians()` or `rowMedians()` functions. Instead, use the `apply` function. Comment the results in comparison with the mean.
