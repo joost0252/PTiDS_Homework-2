@@ -35,7 +35,7 @@ This homework **must** be accomplished using the appropriate GitHub template and
 You can create one or several RMarkdown files to answer the following problems:
 
 
-#### Problem statement
+#### Problem 1. statement
 
 Your boss would like that you analyze some business data. Let $X_1,\dots,X_n$ represents $n$ data points. Suppose you are interested in a statistic, say $\hat{\theta}$. In particular, we consider the mean, the median and the max. You are asked not only to report the statistics, but also an estimator of their variances.
 
@@ -48,190 +48,180 @@ In order to accomplish this task, you will implement the bootstrap. The bootstra
 5.  Compute the unbiased estimator of the variance: $$\frac{1}{B-1}\sum_{b=1}(\hat{\theta}^\ast_{b}-\hat{\theta})^2.$$
 
 
-1.  Load the dataset `supermarket_sales.csv`. We are interested in the column `Unit.price` and $\hat{\theta}$ is the mean. Using a `for` loop, compute the unbiased estimator of the variance with $B=1'000$.
-
-```{r }
+```{r echo = FALSE, include = FALSE, message = FALSE}
 supermarket <- read.csv("supermarket_sales.csv")
-is.data.frame(supermarket)
 unitPrice <- as.matrix(supermarket[,7])
-#unitPrice <- supermarket[,c(1,7)]
 
-# mean statistic on the sample 
-têta_hat <- mean(unitPrice)   # mean of unit price (theoretical)
-n = 500                       #sample size
+# statistic on the sample 
+têta_hat_mean <- mean(unitPrice)       # mean of unit price (theoretical)
+têta_hat_median <- median(unitPrice)   # median of unit price (theoretical)
+têta_hat_max <- max(unitPrice)         # max of unit price (theoretical)
+
 B <- 1000                     #number of iteration
-sd_asymptotic <- sd(unitPrice)
 
 ```
+In order to perfom the unbiased estimator of the variance, we're going to need the boostrapped statistic and the data statistic. Let's suppose $\hat{\theta}$ which can be either the mean, median and the maximum of the dataset.
 
-```{r Bootstrap with for loop }
+Since Bootstrapping is the process of resampling with replacement, we're going to define the boostraped sample as follow: 
 
-# storage
 
-estimator_loop <- rep(0,B)        #save the unbiased estimator of var
-set.seed(1234)
-# Bootstrap with a for loop 
-for (i in 1:B) {
-  
-  #resample the data with remplacement
-  boot_resample <- sample(unitPrice, n, replace = TRUE)   # create a new column resample
-  
-  #Compute the unbiased estimator
-  boot_beta <- (1/(B-1))*(sum(mean(boot_resample) - têta_hat)^2)
-  estimator_loop[i] <- boot_beta                      # bootstrap estimate 
-}
+```{r echo = FALSE, include = FALSE, message = FALSE}
 
-# Standard error
-sd_loop <- sd(estimator_loop)
+tableStatisticalvalue <- data.frame(Statistics= c("mean", "median", "max"), Value=c(têta_hat_mean,têta_hat_median,têta_hat_max))
 
- ###################### ######################## OR ###################### ######################
+```
+```{r echo=FALSE}
+kable(head(tableStatisticalvalue), booktabs = TRUE) %>%
+  kable_styling(font_size = 16)
+```
 
+
+Question 1.  Load the dataset `supermarket_sales.csv`. We are interested in the column `Unit.price` and $\hat{\theta}$ is the mean. Using a `for` loop, compute the unbiased estimator of the variance with $B=1'000$.
+
+
+```{r Bootstrap with for loop mean}
+set.seed(123)
 têta_hat_loop <- rep(0,B)        #save the unbiased estimator of var
-set.seed(1234)
+
 # Bootstrap with a for loop 
 for (i in 1:B) {
   
-  #resample the data with remplacement
-  boot_resample2 <- sample(unitPrice, n, replace = TRUE)   # create a new column resample
-  
-  #Compute the unbiased estimator
-  boot_beta2 <- mean(boot_resample2)
-  têta_hat_loop[i] <- boot_beta2                      # bootstrap estimate 
+  têta_hat_loop[i] <- mean(sample(unitPrice, replace = TRUE))                      # bootstrap estimate of mean
 }
 
-têta_hat_loop_vec <- as.matrix(têta_hat_loop)
-têta_hat <- rep(têta_hat,times=1000)
-#estimator_loop2<- (1/(B-1))*(sum(têta_hat_loop) - têta_hat)^2
-
-estimator_loop2 <-(1/(B-1))*(rowSums(têta_hat_loop_vec- têta_hat)^2)
-
-# Standard error
-sd_loop <- sd(estimator_loop2)
-
-
-
-"
-library(dplyr)
-library(ggplot2)
-
-table_1 <- data_frame(num = 1:B) %>% 
-    group_by(num) %>% 
-    mutate(means = mean(sample(unitPrice, replace = TRUE))) %>% 
-    ggplot(aes(x = means)) +
-    geom_freqpoly()
-
-table_1
-
-
-#Using a `for` loop, compute the unbiased estimator of the variance with B=1'000. 
-
-for (b in B) {
-  initial <- 1
-  end <- 100000
-  k <- c(initial:end)
-  
-  for (n in k) {
-    teta_diff_square <- (têta_hat_b - têta_hat)^2
-    sum_teta <- sum(teta_diff_square)
-    value <- 1/(B-1)*sum_teta 
-    }
-}
-
-print(value)
-"
-
+estimator_loop <-(1/(B-1))*(sum(têta_hat_loop- têta_hat_mean)^2)
+estimator_loop
 ```
+Answer 1 : The unbiased estimator of the variance with $B=1'000$ is *estimator_loop*
 
-To do so we need firt to determine a boostrap sample. Since Bootstrapping is the process of resampling with replacement, we're going to define the boostraped sample as follow: 
-" put a table of the boostraped"
+**Question 2. ** Propose an alternative solution without any control structure (i.e., no `for` loop, `while` loop, ...). You can for example construct a matrix and use `colMeans()` or `rowMeans()` functions.
 
-2.  Propose an alternative solution without any control structure (i.e., no `for` loop, `while` loop, ...). You can for example construct a matrix and use `colMeans()` or `rowMeans()` functions.
-
-```{r Bootstrapping without  control structure}
+```{r Bootstrapping without control structure}
 library(bootstrap)
-## Bootstrap function needs x (a vector), nboot (number of bootstrap) times by re sampling 1000 time. 
-#têta_hat <- mean(unitPrice)   # mean of unit price (theoretical)
-#n = 500                       #sample size
+matrice <- matrix(ncol = B,nrow=B)
 
-B <- 1000                     #number of iteration
-set.seed(1234)
-theta <- function(unitPrice){mean(unitPrice)} 
+#matrice <-mcopy paste the colum btimes
 
-estimator_noloop <- rep(0,B)
-
-k <- bootstrap(unitPrice,B, theta)
-teta_hat_b <- as.matrix(k$thetastar)
+set.seed(123)
 
 #create a vector of teta_hat
+theta <- function(d){colMeans(d)} 
 
-estimator_noloop <-(1/(B-1))*(rowSums(teta_hat_b- têta_hat)^2)
+#create a matrix with B time Unitprice
+boots_noloop <- bootstrap(unitPrice,B, theta)
 
-# Standard error
-sd_noloop <- sd(estimator_noloop)
+teta_hat_noloop <- boots_noloop$thetastar
+
+
+estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat)^2)
+estimator_noloop
+
 ```
 
-3.  Compare the performances of your solutions at 1. and 2. by:
+Answer 2: The unbiased estimator of the variance with $B=1'000$ is *estimator_noloop*
 
-    a\. Profiling your two implementations. Use `profvis::profvis({...})` where `...` is replaced by your code. Comment on the comparison, in particular the memory usage and computation time.  
-    b. Benchmarking your two implementations. Use `microbenchmark::microbenchmark({...},{...})` where `...` is to be replaced by your implementations. Comment the results.
+**Question 3**.  Compare the performances of your solutions at 1. and 2. by:
 
-**Profiling Bootstrap with for loop **
+    **a.** Profiling your two implementations. Use `profvis::profvis({...})`. Comment on the comparison, in particular the memory usage and computation time.  
+
 ```{r }
-#3.a\. Profiling your two implementations. Use `profvis::profvis({...})` where `...` is replaced by your code. Comment on the comparison, in particular the memory usage and computation time.  
+#Profiling Bootstrap with for loop 
 
 # Profiling Bootstrap with a for loop 
+set.seed(123)
+
 profvis::profvis({
-  
 têta_hat_loop <- rep(0,B)        #save the unbiased estimator of var
-set.seed(1234)
+
 # Bootstrap with a for loop 
 for (i in 1:B) {
   
-  #resample the data with remplacement
-  boot_resample2 <- sample(unitPrice, n, replace = TRUE)   # create a new column resample
-  
-  #Compute the unbiased estimator
-  boot_beta2 <- mean(boot_resample2)
-  têta_hat_loop[i] <- boot_beta2                      # bootstrap estimate 
+  têta_hat_loop[i] <- mean(sample(unitPrice, replace = TRUE))                      # bootstrap estimate of mean
 }
 
-têta_hat_loop_vec <- as.matrix(têta_hat_loop)
-têta_hat <- rep(têta_hat,times=1000)
-#estimator_loop2<- (1/(B-1))*(sum(têta_hat_loop) - têta_hat)^2
+estimator_loop <-(1/(B-1))*(sum(têta_hat_loop- têta_hat_mean)^2)
+estimator_loop
+ })
 
-estimator_loop2 <-(1/(B-1))*(rowSums(têta_hat_loop_vec- têta_hat)^2)
-}) 
 ```
-**Profiling Bootstrap without loop **
+
 ```{r }
 # Profiling Bootstrap without loop 
-
+set.seed(123)
 profvis::profvis({
-  B <- 1000                     #number of iteration
-  set.seed(1234)
-  theta <- function(unitPrice){mean(unitPrice)} 
-  
-  estimator_noloop <- rep(0,B)
-  
-  k <- bootstrap(unitPrice,B, theta)
-  teta_hat_b <- as.matrix(k$thetastar)     #create a matrix of teta_hat
-  
-  estimator_noloop <-(1/(B-1))*(rowSums(teta_hat_b- têta_hat)^2)})
+
+  })
 
 ```
 
-4.  Repeat 2. with the median as the statistic of interest. You are still required not use any control structures. There are no `colMedians()` or `rowMedians()` functions. Instead, use the `apply` function. Comment the results in comparison with the mean.
-```{r }
-"Create nBS bootstrap 10x10 matrices (I'm using set.seed(...) to ensure reproducibility of sample data). Resulting matrices are stored in a list.
+**Answer 3.a**:  The memory usage and computation time for the Bootstrap with control structure are : 
+* memory usage :
+* computation time:
 
-nBS <- 1000;
-set.seed(2017);
-lst <- lapply(1:nBS, function(x) 
-    matrix(rnorm(10 * 10, mean = 0, sd = 1), nrow = 10, ncol = 10));
-"
+And the memory usage and computation time for Bootstrap without control structure are: 
+* memory usage :
+* computation time : 
+
+We take less time in the case of bootstrapping with / without control structure.
+
+<br>
+
+**b.** Benchmarking your two implementations. Use `microbenchmark::microbenchmark({...},{...}). Comment the results.
+
+**Answer 3.b**:
+
+**Question 4.**  Repeat 2. with the *median* as the statistic of interest. You are still required not use any control structures. There are no `colMedians()` or `rowMedians()` functions. Instead, use the `apply` function. Comment the results in comparison with the mean.
+
+```{r Bootstrap with apply function }
+set.seed(123)
+
+myBootFun <- function(d) {
+    boot(d, median, R = 1000)
+}
+
+têta_hat_apply <- sapply(unitPrice, function(x) myBootFun(x)$t0 )
+
+estimator_apply <-(1/(B-1))*(sum(têta_hat_apply- têta_hat_median)^2)
+estimator_apply
+
 ```
 
-5.  Repeat 1. with the max as the statistic of interest. What do you observe? Comment.
-```{r }
+Before anything else, let's remember that The median is sometimes used as opposed to the mean when there are outliers in the sequence that might skew the average of the values.In a normal distribution, the median is the same as the mean and the mode, which is not the case for us. 
 
+Compare to the mean, the median value is `XXX` which is higher/lower that the mean which is at `XXX`. Indeed, A lower median mean, 
+
+
+
+**Question 5.**  Repeat 1. with the *max* as the statistic of interest. What do you observe? Comment.
+```{r Bootstrap with for loop max }
+
+set.seed(123)
+têta_hat_loop_max <- rep(0,B)        #save the unbiased estimator of var
+
+# Bootstrap with a for loop 
+for (i in 1:B) {
+  
+  têta_hat_loop_max[i] <- max(sample(unitPrice, replace = TRUE))                      # bootstrap estimate of mean
+}
+
+estimator_loop_max <-(1/(B-1))*(sum(têta_hat_loop_max- têta_hat_max)^2)
+estimator_loop_max
+```
+
+**Answer 5:** In this case the statistic of interest is the maximum, as a reminder we had the following observation:
+* unbiased estimator of var with mean boostraping : 0.6247326
+* unbiased estimator of var with max boostraping : 0.07403403
+
+We can observe that we have a decrease on the variance. 
+
+```{r echo = FALSE, include = FALSE, message = FALSE}
+df_answer5 <- data.frame (Statistic  = c("mean", "max"),
+                  "têta" = c(têta_hat_mean, têta_hat_max),
+                  "Unbiased Estimator" = c(estimator_loop,estimator_loop_max)
+                  )
+```
+```{r echo=FALSE}
+df_answer5 %>%
+  kable(booktabs = TRUE) %>%
+  kable_styling(font_size =16)
 ```
