@@ -74,25 +74,21 @@ estimator_loop
 **Question 2. ** Propose an alternative solution without any control structure (i.e., no `for` loop, `while` loop, ...). You can for example construct a matrix and use `colMeans()` or `rowMeans()` functions.
 
 ```{r Bootstrapping without control structure}
-"library(bootstrap)
-matrice <- matrix(ncol = B,nrow=B)
 
-#matrice <-mcopy paste the colum btimes
+R=matrix(rep(unitPrice,length(unitPrice)),
+         ncol=length(unitPrice),
+         byrow=T)
+dfUnitePrice <- as.data.frame(t(R))
 
-set.seed(123)
+set.seed(123)                     # Set seed for reproducibility
 
-#create a vector of teta_hat
-theta <- function(d){colMeans(d)} 
+y <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size = length(x)))
 
-#create a matrix with B time Unitprice
-boots_noloop <- bootstrap(unitPrice,B, theta)
-
-teta_hat_noloop <- boots_noloop$thetastar
-
+teta_hat_noloop <- colMeans(y)
 
 estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat)^2)
 estimator_noloop
-"
+
 ```
 
 **Answer 2 :** The unbiased estimator of the variance with $B=1'000$ is *estimator_noloop*
@@ -105,7 +101,7 @@ estimator_noloop
 #Profiling Bootstrap with for loop 
 
 # Profiling Bootstrap with a for loop 
-set.seed(123)
+set.seed(123)                             # Set seed for reproducibility
 
 profvis::profvis({
 têta_hat_loop <- rep(0,B)        #save the unbiased estimator of var
@@ -123,13 +119,25 @@ estimator_loop
 ```
 
 ```{r }
-"
 # Profiling Bootstrap without loop 
 set.seed(123)
 profvis::profvis({
 
+R=matrix(rep(unitPrice,length(unitPrice)),
+         ncol=length(unitPrice),
+         byrow=T)
+dfUnitePrice <- as.data.frame(t(R))
+
+set.seed(123)                     # Set seed for reproducibility
+
+y <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size = length(x)))
+
+teta_hat_noloop <- colMeans(y)
+
+estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat)^2)
+estimator_noloop
+
   })
-"
 ```
 
 **Answer 3.a**:  The memory usage and computation time for the Bootstrap with control structure are : 
@@ -147,7 +155,7 @@ We take less time in the case of bootstrapping with / without control structure.
 **b.** Benchmarking your two implementations. Use `microbenchmark::microbenchmark({...},{...}). Comment the results.
 
 ```{r}
-"
+
 microbenchmark::microbenchmark({
   têta_hat_loop <- rep(0,B)     
   for (i in 1:B) {
@@ -158,8 +166,20 @@ microbenchmark::microbenchmark({
 estimator_loop <-(1/(B-1))*(sum(têta_hat_loop- têta_hat_mean)^2)
 estimator_loop},
 
-{...})
-"
+{R=matrix(rep(unitPrice,length(unitPrice)),
+         ncol=length(unitPrice),
+         byrow=T)
+dfUnitePrice <- as.data.frame(t(R))
+
+set.seed(123)                     # Set seed for reproducibility
+
+y <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size = length(x)))
+
+teta_hat_noloop <- colMeans(y)
+
+estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat)^2)
+estimator_noloop})
+
 
 ```
 **Answer 3.b**:
@@ -167,13 +187,12 @@ estimator_loop},
 **Question 4.**  Repeat 2. with the *median* as the statistic of interest. You are still required not use any control structures. There are no `colMedians()` or `rowMedians()` functions. Instead, use the `apply` function. Comment the results in comparison with the mean.
 
 ```{r Bootstrap with apply function }
-set.seed(123)
+set.seed(123)                        # Set seed for reproducibility
+#dfUnitePrice <- as.data.frame(t(R))
 
-myBootFun <- function(d) {
-    boot(d, median, R = 1000)
-}
+y <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size = length(x)))
 
-têta_hat_apply <- sapply(unitPrice, function(x) myBootFun(x)$t0 )
+têta_hat_apply <- median(y)
 
 estimator_apply <-(1/(B-1))*(sum(têta_hat_apply- têta_hat_median)^2)
 estimator_apply
@@ -182,7 +201,7 @@ estimator_apply
 
 Before anything else, let's remember that The median is sometimes used as opposed to the mean when there are outliers in the sequence that might skew the average of the values.In a normal distribution, the median is the same as the mean and the mode, which is not the case for us. 
 
-Compare to the mean, the median value is `XXX` which is higher/lower that the mean which is at `XXX`. Indeed, A lower median mean, 
+Compare to the mean, the median value is `2.56 * 10^-05` which is much lower that the mean which is at `XXX`. Indeed, A lower median mean, 
 
 
 
