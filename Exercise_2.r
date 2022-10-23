@@ -72,7 +72,7 @@ reactive_func <- function (full_name_id) {
 
 # define a given client_id_i (this would compose your iterator in a for loop to send to all client)
 
-for (i in nrow(df)){
+for (i in 1:nrow(df)){
     full_name_id <- df[i,] # i ici
 
     # define greeting
@@ -98,7 +98,6 @@ for (i in nrow(df)){
             plot_html,
             '',
             reactive_func(full_name_id),
-            #glue('Besides, since you are' df$Age[] 'and earn 'df$Wealth[], reactive_func()),
             '',
             glue('Please let me know if you have any question.'),
             '',
@@ -133,10 +132,11 @@ for (i in nrow(df)){
         )
     )
     )
+    email_final
 }
 
 # view mail html
-#email_final 
+email_final
 
 # create identification smtp protocol (only to be run once)
 #create_smtp_creds_key(
