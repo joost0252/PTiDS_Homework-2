@@ -4,6 +4,15 @@ author: "Amina Mohammed (17301920), Joost Dijkstra (),Edward Tandia (17310806)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
+
+Updated to do list:
+- Ex1 Amina
+- Ex2 Ed
+- Ex3 Joost
+
+- Make the RMD aesthetic
+- Delete useless file and clean the GIT
+
 ```{r, echo = FALSE, include = FALSE, message = FALSE}
 source(here::here("Setup.R"))
 ```
