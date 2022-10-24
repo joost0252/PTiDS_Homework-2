@@ -5,15 +5,6 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
 
-Updated to do list:
-
-- Ex1 Amina
-- Ex2 Ed
-- Ex3 Joost
-
-- Make the RMD aesthetic
-- Delete useless file and clean the GIT
-
 ```{r, echo = FALSE, include = FALSE, message = FALSE}
 source(here::here("Setup.R"))
 ```
@@ -285,4 +276,12 @@ df_answer5 %>%
   kable_styling(font_size =10)
 ```
 
-We can observe that we have a decrease on the variance. Since we observe the Unbiased estimator of var with max boostraping, we are looking for the most 
+We can observe that we have a huge decrease on the variance.
+
+___Answers of Problem 2___
+
+The email have been sended without issue. 
+
+___Answers of Problem 3___
+
+For the maze, we have found the following GIF. 
