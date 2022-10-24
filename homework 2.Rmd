@@ -6,6 +6,7 @@ output: html_document
 ---
 
 Updated to do list:
+
 - Ex1 Amina
 - Ex2 Ed
 - Ex3 Joost
@@ -21,7 +22,6 @@ source(here::here("Setup.R"))
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#### Problem 1.
 
 ___Answers of Problem 1___
 ```{r echo = FALSE, include = FALSE, message = FALSE}
@@ -53,7 +53,8 @@ kable(head(tableStatisticalvalue), booktabs = TRUE) %>%
 
 
 **Question 1.** 
-```{r Bootstrap with for loop mean}
+```{r echo = FALSE, include = FALSE, message = FALSE}
+#Bootstrap with for loop mean
 set.seed(123)
 têta_hat_loop <- rep(0,B)        #save the unbiased estimator of var
 
@@ -109,7 +110,7 @@ kable(head(tableStatisticalvalue), booktabs = TRUE) %>%
   kable_styling(font_size = 10)
 ```
 
-***a. Profiling Bootstrap with for loop***
+***a.1. Profiling Bootstrap with for loop***
 
 ```{r }
 #Profiling Bootstrap with for loop 
@@ -134,7 +135,7 @@ estimator_loop
 <br>
 <br>
 
-***a. Profiling Bootstrap with any control structure ***
+***a.2. Profiling Bootstrap with any control structure ***
 ```{r }
 # Profiling Bootstrap without loop 
 set.seed(123)
@@ -151,7 +152,7 @@ y <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size 
 
 teta_hat_noloop <- colMeans(y)
 
-estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat)^2)
+estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat_mean)^2)
 estimator_noloop
 
   })
@@ -176,6 +177,7 @@ Furthermore, the cache function can help us to reduce the time of computation si
 ```{r}
 
 microbenchmark::microbenchmark({
+  set.seed(123)   
   têta_hat_loop <- rep(0,B)     
   for (i in 1:B) {
   
@@ -199,13 +201,17 @@ teta_hat_noloop <- colMeans(y)
 estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat_mean)^2)
 estimator_noloop})
 
-
 ```
-We can analyze the benchmarking between the two implementation. Indeed, the microbenchmark package measure the performance of both codes. 
+We can analyze the benchmarking between the two implementation. Indeed, the microbenchmark package measure the performance of both codes, it also asses and compare the speed of several functions that do the same thing. 
 
-**Question 4.**  Repeat 2. with the *median* as the statistic of interest. You are still required not use any control structures. There are no `colMedians()` or `rowMedians()` functions. Instead, use the `apply` function. Comment the results in comparison with the mean.
+As we can see, we have as an output summary statistics which describing how long the code took to run. This output gives us min, lq, mean, median, uq, and max describing the time it took to run the two function over the 100 iterations of each function call.
 
-```{r Bootstrap with apply function }
+When we compare both codes, we can observe that the spreed is larger in the for loop. 
+
+**Question 4.** 
+
+```{r echo = FALSE, include = FALSE, message = FALSE}
+#Bootstrap with apply function 
 set.seed(123)                        # Set seed for reproducibility
 #dfUnitePrice <- as.data.frame(t(R))
 
@@ -217,16 +223,18 @@ estimator_apply <-(1/(B-1))*(sum(têta_hat_apply- têta_hat_median)^2)
 estimator_apply
 
 ```
+In question 4 we have to compute with $\hat{\theta}$ the *median* as the statistic of interest. In this case we will not either use a any control structures and neither no `colMedians()` or `rowMedians()` functions. Instead, we use the `apply` function and compare the result with the mean that we found
 
 Before anything else, let's remember that The median is sometimes used as opposed to the mean when there are outliers in the sequence that might skew the average of the values.In a normal distribution, the median is the same as the mean and the mode, which is not the case for us. 
 
-Compare to the mean, the median value is `r estimator_apply` which is much lower that the mean which is at `r estimator_loop`. Indeed, A lower median mean, that the distribution of the data .... decalé vers la gauche
+Compare to the mean, the median value is `r estimator_apply` which is much lower that the mean which is at `r estimator_loop`. Indeed, if the distribution of data is skewed to the right, the mean is higher than the median. The median can be more descriptive of the data set, here we can understand that most of our data are lower in terms of quantity but there's some high value which make the mean a higher. 
 
 
 <br>
 **Question 5.** 
 
-```{r Bootstrap with for loop max }
+```{r  echo = FALSE, include = FALSE, message = FALSE }
+#Bootstrap with for loop max
 
 set.seed(123)
 têta_hat_loop_max <- rep(0,B)        #save the unbiased estimator of var
@@ -242,8 +250,9 @@ estimator_loop_max
 ```
 
 In question 5, we use a control structure as we did previously in point 1. Here we're going to repeat with $\hat{\theta}$ the *max* as the statistic of interest and compare it to the mean from point 1.
-* unbiased estimator of var with mean boostraping : 0.6247326
-* unbiased estimator of var with max boostraping : 0.07403403
+
+- Unbiased estimator of var with mean boostraping : `r estimator_loop`
+- Unbiased estimator of var with max boostraping : `r estimator_loop_max`
 
 We can observe that we have a decrease on the variance. 
 
@@ -256,5 +265,5 @@ df_answer5 <- data.frame (Statistic  = c("mean", "max"),
 ```{r echo=FALSE}
 df_answer5 %>%
   kable(booktabs = TRUE) %>%
-  kable_styling(font_size =16)
+  kable_styling(font_size =10)
 ```

@@ -4854,13 +4854,19 @@ display: none;
 <h1 class="title toc-ignore">homework-2</h1>
 <h4 class="author">Amina Mohammed (17301920), Joost Dijkstra (),Edward
 Tandia (17310806)</h4>
-<h4 class="date">22 octobre, 2022</h4>
+<h4 class="date">24 octobre, 2022</h4>
 
 </div>
 
 
-<div id="problem-1." class="section level4">
-<h4>Problem 1.</h4>
+<p>Updated to do list:</p>
+<ul>
+<li><p>Ex1 Amina</p></li>
+<li><p>Ex2 Ed</p></li>
+<li><p>Ex3 Joost</p></li>
+<li><p>Make the RMD aesthetic</p></li>
+<li><p>Delete useless file and clean the GIT</p></li>
+</ul>
 <p><strong><em>Answers of Problem 1</em></strong></p>
 <p>In order to perfom the unbiased estimator of the variance, we’re
 going to need the boostrapped statistic and the data statistic. Let’s
@@ -4868,7 +4874,7 @@ suppose <span class="math inline">\(\hat{\theta}\)</span> which can be
 either the mean, median and the maximum of the dataset.</p>
 <p>Since Bootstrapping is the process of resampling with replacement,
 we’re going to define the boostraped sample as follow:</p>
-<table class="table" style="font-size: 16px; margin-left: auto; margin-right: auto;">
+<table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -4907,7 +4913,6 @@ max
 </tbody>
 </table>
 <p><strong>Question 1.</strong></p>
-<pre><code>#&gt; [1] 0.625</code></pre>
 <p>After loading the dataset <code>supermarket_sales.csv</code>. We are
 interested in the column <code>Unit.price</code> where <span class="math inline">\(\hat{\theta}\)</span> is the mean. We used
 a<code>for</code> loop in order to compute the bootstrap and then
@@ -4918,7 +4923,6 @@ Feel free to observe the code that we did:</p>
 find that the unbiased estimator of the variance is 0.625.</p>
 <p><br></p>
 <p><strong>Question 2. </strong></p>
-<pre><code>#&gt; [1] 0.625</code></pre>
 <p>In question 2, we have proposed an alternative solution without
 control structure, we have decide to use the to construct a matrix BxB,
 and finally we apply the function <code>colMeans()</code> to have our
@@ -4929,7 +4933,7 @@ that the unbiased estimator of the variance is 0.625. <br></p>
 solutions at point 1. and point 2. we decide to use two different
 metrics. In point a, we’re profiling our implementation and observe the
 memory usage and the computation time. In point b, we’re benchmarking
-our implementation and observe the resultat that we get.</p>
+our implementation and observe the result that we get.</p>
 <p>As a remember, we’ve as for mean the exact same value either if we
 use a structure control or not. What could make the difference can be
 the computation time.</p>
@@ -4963,14 +4967,14 @@ mean without control structure
 </tr>
 </tbody>
 </table>
-<p><strong><em>a. Profiling Bootstrap with for loop</em></strong></p>
+<p><strong><em>a.1. Profiling Bootstrap with for loop</em></strong></p>
 <div id="htmlwidget-4bf2c819053c6b3252a5" style="width:100%;height:600px;" class="profvis html-widget"></div>
-<script type="application/json" data-for="htmlwidget-4bf2c819053c6b3252a5">{"x":{"message":{"prof":{"time":[1,1,2,2,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,9,9,9,10,10,10,11,11,11,12,12,12,13,13,13,14,14,14,15,15,15,16,16,16],"depth":[2,1,2,1,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1,3,2,1],"label":["sample","rmarkdown::render","mean.default","rmarkdown::render","mean.default","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render","sample.int","sample","rmarkdown::render"],"filenum":[1,null,null,null,null,null,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null,null,1,null],"linenum":[11,null,null,null,null,null,null,11,null,null,11,null,null,11,null,null,11,null,null,11,null,null,11,null,null,11,null,null,11,null,null,11,null,null,11,null,null,11,null,null,11,null,null,11,null],"memalloc":[15.6681594848633,15.6681594848633,16.4811019897461,16.4811019897461,17.3079986572266,17.3079986572266,18.1388320922852,18.1388320922852,18.1388320922852,18.9937591552734,18.9937591552734,18.9937591552734,19.8486862182617,19.8486862182617,19.8486862182617,20.70361328125,20.70361328125,20.70361328125,21.5547256469727,21.5547256469727,21.5547256469727,22.3994522094727,22.3994522094727,22.3994522094727,23.2365493774414,23.2365493774414,23.2365493774414,24.0812759399414,24.0812759399414,24.0812759399414,24.9323883056641,24.9323883056641,24.9323883056641,25.791130065918,25.791130065918,25.791130065918,26.6460571289062,26.6460571289062,26.6460571289062,27.5009841918945,27.5009841918945,27.5009841918945,28.3559112548828,28.3559112548828,28.3559112548828],"meminc":[0,0,0.812942504882812,0,0.826896667480469,0,0.830833435058594,0,0,0.854927062988281,0,0,0.854927062988281,0,0,0.854927062988281,0,0,0.851112365722656,0,0,0.8447265625,0,0,0.83709716796875,0,0,0.8447265625,0,0,0.851112365722656,0,0,0.858741760253906,0,0,0.854927062988281,0,0,0.854927062988281,0,0,0.854927062988281,0,0],"filename":["<expr>",null,null,null,null,null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null,null,"<expr>",null]},"interval":10,"files":[{"filename":"<expr>","content":"#Profiling Bootstrap with for loop \n\nset.seed(123)                             # Set seed for reproducibility\n\nprofvis::profvis({\ntêta_hat_loop <- rep(0,B)        #save the unbiased estimator of var\n\n# Bootstrap with a for loop \nfor (i in 1:B) {\n  \n  têta_hat_loop[i] <- mean(sample(unitPrice, replace = TRUE))                      # bootstrap estimate of mean\n}\n\nestimator_loop <-(1/(B-1))*(sum(têta_hat_loop- têta_hat_mean)^2)\nestimator_loop\n })\n","normpath":"<expr>"}],"prof_output":"/var/folders/pc/r3djyb2j56l_dvg9gq96vz2w0000gn/T//RtmpDwzkn7/file145577c0c1d48.prof","highlight":{"output":["^output\\$"],"gc":["^<GC>$"],"stacktrace":["^\\.\\.stacktraceo(n|ff)\\.\\.$"]},"split":"h"}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-4bf2c819053c6b3252a5">{"x":{"message":{"prof":{"time":[1,1,1,2,2,3,3,4,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,14,15,15,16,16],"depth":[3,2,1,2,1,2,1,3,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,1],"label":["sample.int","sample","rmarkdown::render","mean.default","rmarkdown::render","mean.default","rmarkdown::render","sample.int","sample","rmarkdown::render","mean.default","rmarkdown::render","mean.default","rmarkdown::render","mean.default","rmarkdown::render","mean.default","rmarkdown::render","all","rmarkdown::render","mean.default","rmarkdown::render","mean.default","rmarkdown::render","mean.default","rmarkdown::render","mean.default","rmarkdown::render","mean.default","rmarkdown::render","mean.default","rmarkdown::render","mean.default","rmarkdown::render"],"filenum":[null,1,null,null,null,null,null,null,1,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"linenum":[null,11,null,null,null,null,null,null,11,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"memalloc":[39.5412902832031,39.5412902832031,39.5412902832031,40.3922805786133,40.3922805786133,41.2191772460938,41.2191772460938,42.0640258789062,42.0640258789062,42.0640258789062,42.9290313720703,42.9290313720703,43.7979736328125,43.7979736328125,44.6529006958008,44.6529006958008,45.4938125610352,45.4938125610352,46.3208312988281,46.3208312988281,47.1476058959961,47.1476058959961,47.9604873657227,47.9604873657227,48.7453384399414,48.7453384399414,49.5301895141602,49.5301895141602,50.3290557861328,50.3290557861328,51.1279220581055,51.1279220581055,51.940803527832,51.940803527832],"meminc":[0,0,0,0.850990295410156,0,0.826896667480469,0,0.8448486328125,0,0,0.865005493164062,0,0.868942260742188,0,0.854927062988281,0,0.840911865234375,0,0.827018737792969,0,0.826774597167969,0,0.812881469726562,0,0.78485107421875,0,0.78485107421875,0,0.798866271972656,0,0.798866271972656,0,0.812881469726562,0],"filename":[null,"<expr>",null,null,null,null,null,null,"<expr>",null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]},"interval":10,"files":[{"filename":"<expr>","content":"#Profiling Bootstrap with for loop \n\nset.seed(123)                             # Set seed for reproducibility\n\nprofvis::profvis({\ntêta_hat_loop <- rep(0,B)        #save the unbiased estimator of var\n\n# Bootstrap with a for loop \nfor (i in 1:B) {\n  \n  têta_hat_loop[i] <- mean(sample(unitPrice, replace = TRUE))                      # bootstrap estimate of mean\n}\n\nestimator_loop <-(1/(B-1))*(sum(têta_hat_loop- têta_hat_mean)^2)\nestimator_loop\n })\n","normpath":"<expr>"}],"prof_output":"/var/folders/pc/r3djyb2j56l_dvg9gq96vz2w0000gn/T//RtmpJBUKzs/filea885eb3861.prof","highlight":{"output":["^output\\$"],"gc":["^<GC>$"],"stacktrace":["^\\.\\.stacktraceo(n|ff)\\.\\.$"]},"split":"h"}},"evals":[],"jsHooks":[]}</script>
 <p><br> <br></p>
-<p><strong><em>a. Profiling Bootstrap with any control structure
+<p><strong><em>a.2. Profiling Bootstrap with any control structure
 </em></strong></p>
-<div id="htmlwidget-c126e4697ed0697ae69b" style="width:100%;height:600px;" class="profvis html-widget"></div>
-<script type="application/json" data-for="htmlwidget-c126e4697ed0697ae69b">{"x":{"message":{"prof":{"time":[1,1,1,2,2,2,2,3,3,3,3,3,4,4,5,5,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,11,11,12,12,13,13],"depth":[3,2,1,4,3,2,1,5,4,3,2,1,2,1,2,1,3,2,1,4,3,2,1,4,3,2,1,4,3,2,1,4,3,2,1,4,3,2,1,2,1,2,1],"label":["as.vector","as.data.frame.matrix","rmarkdown::render","<GC>","aperm.default","apply","rmarkdown::render","sample.int","sample","FUN","apply","rmarkdown::render","apply","rmarkdown::render","apply","rmarkdown::render","unlist","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","colMeans","rmarkdown::render","colMeans","rmarkdown::render"],"filenum":[null,null,null,null,null,1,null,null,1,null,1,null,1,null,1,null,null,1,null,null,null,1,null,null,null,1,null,null,null,1,null,null,null,1,null,null,null,1,null,1,null,1,null],"linenum":[null,null,null,null,null,12,null,null,12,null,12,null,12,null,12,null,null,12,null,null,null,12,null,null,null,12,null,null,null,12,null,null,null,12,null,null,null,12,null,14,null,14,null],"memalloc":[42.3442687988281,42.3442687988281,42.3442687988281,50.3420639038086,50.3420639038086,50.3420639038086,50.3420639038086,50.6042709350586,50.6042709350586,50.6042709350586,50.6042709350586,50.6042709350586,59.4761123657227,59.4761123657227,53.571403503418,53.571403503418,53.9994277954102,53.9994277954102,53.9994277954102,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,61.6289825439453,53.9931640625,53.9931640625,53.9931640625,53.9931640625,61.653923034668,61.653923034668,61.653923034668,61.653923034668],"meminc":[0,0,0,7.99779510498047,0,0,0,0.26220703125,0,0,0,0,8.87184143066406,0,-5.90470886230469,0,0.428024291992188,0,0,7.62955474853516,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-7.63581848144531,0,0,0,7.66075897216797,0,0,0],"filename":[null,null,null,null,null,"<expr>",null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null,null,"<expr>",null,null,null,"<expr>",null,null,null,"<expr>",null,null,null,"<expr>",null,null,null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null]},"interval":10,"files":[{"filename":"<expr>","content":"# Profiling Bootstrap without loop \nset.seed(123)\nprofvis::profvis({\n\nR=matrix(rep(unitPrice,length(unitPrice)),\n         ncol=length(unitPrice),\n         byrow=T)\ndfUnitePrice <- as.data.frame(t(R))\n\nset.seed(123)                     # Set seed for reproducibility\n\ny <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size = length(x)))\n\nteta_hat_noloop <- colMeans(y)\n\nestimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat)^2)\nestimator_noloop\n\n  })","normpath":"<expr>"}],"prof_output":"/var/folders/pc/r3djyb2j56l_dvg9gq96vz2w0000gn/T//RtmpYAkTr5/file1450d6665c692.prof","highlight":{"output":["^output\\$"],"gc":["^<GC>$"],"stacktrace":["^\\.\\.stacktraceo(n|ff)\\.\\.$"]},"split":"h"}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-4bf2c819053c6b3252a5" style="width:100%;height:600px;" class="profvis html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4bf2c819053c6b3252a5">{"x":{"message":{"prof":{"time":[1,1,1,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,12,12,13,13],"depth":[3,2,1,4,3,2,1,5,4,3,2,1,5,4,3,2,1,6,5,4,3,2,1,3,2,1,4,3,2,1,4,3,2,1,4,3,2,1,4,3,2,1,2,1,2,1,2,1],"label":["as.vector","as.data.frame.matrix","rmarkdown::render","<GC>","aperm.default","apply","rmarkdown::render","sample.int","sample","FUN","apply","rmarkdown::render","sample.int","sample","FUN","apply","rmarkdown::render","<GC>","sample.int","sample","FUN","apply","rmarkdown::render","lengths","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","colMeans","rmarkdown::render","colMeans","rmarkdown::render","colMeans","rmarkdown::render"],"filenum":[null,null,null,null,null,1,null,null,1,null,1,null,null,1,null,1,null,null,null,1,null,1,null,null,1,null,null,null,1,null,null,null,1,null,null,null,1,null,null,null,1,null,1,null,1,null,1,null],"linenum":[null,null,null,null,null,12,null,null,12,null,12,null,null,12,null,12,null,null,null,12,null,12,null,null,12,null,null,null,12,null,null,null,12,null,null,null,12,null,null,null,12,null,14,null,14,null,14,null],"memalloc":[42.8018417358398,42.8018417358398,42.8018417358398,49.5027542114258,49.5027542114258,49.5027542114258,49.5027542114258,49.5336608886719,49.5336608886719,49.5336608886719,49.5336608886719,49.5336608886719,57.2362670898438,57.2362670898438,57.2362670898438,57.2362670898438,57.2362670898438,63.998291015625,63.998291015625,63.998291015625,63.998291015625,63.998291015625,63.998291015625,57.9637832641602,57.9637832641602,57.9637832641602,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,53.0975952148438,53.0975952148438,53.0975952148438,53.0975952148438,60.7583541870117,60.7583541870117,60.7583541870117,60.7583541870117,60.7583541870117,60.7583541870117],"meminc":[0,0,0,6.70091247558594,0,0,0,0.0309066772460938,0,0,0,0,7.70260620117188,0,0,0,0,6.76202392578125,0,0,0,0,0,-6.03450775146484,0,0,2.76963806152344,0,0,0,0,0,0,0,0,0,0,0,-7.63582611083984,0,0,0,7.66075897216797,0,0,0,0,0],"filename":[null,null,null,null,null,"<expr>",null,null,"<expr>",null,"<expr>",null,null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,null,"<expr>",null,null,null,"<expr>",null,null,null,"<expr>",null,null,null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null]},"interval":10,"files":[{"filename":"<expr>","content":"# Profiling Bootstrap without loop \nset.seed(123)\nprofvis::profvis({\n\nR=matrix(rep(unitPrice,length(unitPrice)),\n         ncol=length(unitPrice),\n         byrow=T)\ndfUnitePrice <- as.data.frame(t(R))\n\nset.seed(123)                     # Set seed for reproducibility\n\ny <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size = length(x)))\n\nteta_hat_noloop <- colMeans(y)\n\nestimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat_mean)^2)\nestimator_noloop\n\n  })","normpath":"<expr>"}],"prof_output":"/var/folders/pc/r3djyb2j56l_dvg9gq96vz2w0000gn/T//Rtmpwb8kQu/fileac639b73009.prof","highlight":{"output":["^output\\$"],"gc":["^<GC>$"],"stacktrace":["^\\.\\.stacktraceo(n|ff)\\.\\.$"]},"split":"h"}},"evals":[],"jsHooks":[]}</script>
 <p><br> <br></p>
 <p>Thus, the memory usage and computation time for the Bootstrap
 <strong>with control</strong> structure are : <br> -Memory usage : 12 MB
@@ -4982,40 +4986,55 @@ mean without control structure
 without control structure is lower that the case of using a control
 structure, however, we use more memory. Thus it’s to select between
 them, we have to do a trade off between memory usage and computation
-time. <br></p>
+time. Furthermore, the cache function can help us to reduce the time of
+computation since it will be computed in the background. <br></p>
 <p><br> <strong><em>b. Benchmarking our two implementations.
 </em></strong></p>
 <pre><code>#&gt; Unit: milliseconds
 #&gt;                                                                                                                                                                                                                                                                                                                                                                                                                      expr
-#&gt;                                                                                                                                                                                           {     têta_hat_loop &lt;- rep(0, B)     for (i in 1:B) {         têta_hat_loop[i] &lt;- mean(sample(unitPrice, replace = TRUE))     }     estimator_loop &lt;- (1/(B - 1)) * (sum(têta_hat_loop - têta_hat_mean)^2)     estimator_loop }
+#&gt;                                                                                                                                                                         {     set.seed(123)     têta_hat_loop &lt;- rep(0, B)     for (i in 1:B) {         têta_hat_loop[i] &lt;- mean(sample(unitPrice, replace = TRUE))     }     estimator_loop &lt;- (1/(B - 1)) * (sum(têta_hat_loop - têta_hat_mean)^2)     estimator_loop }
 #&gt;  {     R = matrix(rep(unitPrice, length(unitPrice)), ncol = length(unitPrice),          byrow = T)     dfUnitePrice &lt;- as.data.frame(t(R))     set.seed(123)     y &lt;- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x,          replace = TRUE, size = length(x)))     teta_hat_noloop &lt;- colMeans(y)     estimator_noloop &lt;- (1/(B - 1)) * (sum(teta_hat_noloop -          têta_hat_mean)^2)     estimator_noloop }
-#&gt;    min    lq mean median  uq max neval
-#&gt;  162.4 163.7  167    165 167 214   100
-#&gt;   73.2  77.1  107    123 127 142   100</code></pre>
-<p>In order to understand the bem</p>
-<p><strong>Question 4.</strong> Repeat 2. with the <em>median</em> as
-the statistic of interest. You are still required not use any control
-structures. There are no <code>colMedians()</code> or
-<code>rowMedians()</code> functions. Instead, use the <code>apply</code>
-function. Comment the results in comparison with the mean.</p>
-<pre><code>#&gt; [1] 2.56e-05</code></pre>
+#&gt;  min    lq  mean median  uq max neval
+#&gt;  163 163.2 168.4  164.8 167 213   100
+#&gt;   71  75.4  96.1   78.2 123 149   100</code></pre>
+<p>We can analyze the benchmarking between the two implementation.
+Indeed, the microbenchmark package measure the performance of both
+codes, it also asses and compare the speed of several functions that do
+the same thing.</p>
+<p>As we can see, we have as an output summary statistics which
+describing how long the code took to run. This output gives us min, lq,
+mean, median, uq, and max describing the time it took to run the two
+function over the 100 iterations of each function call.</p>
+<p>When we compare both codes, we can observe that the spreed is larger
+in the for loop.</p>
+<p><strong>Question 4.</strong></p>
+<p>In question 4 we have to compute with <span class="math inline">\(\hat{\theta}\)</span> the <em>median</em> as the
+statistic of interest. In this case we will not either use a any control
+structures and neither no <code>colMedians()</code> or
+<code>rowMedians()</code> functions. Instead, we use the
+<code>apply</code> function and compare the result with the mean that we
+found</p>
 <p>Before anything else, let’s remember that The median is sometimes
 used as opposed to the mean when there are outliers in the sequence that
 might skew the average of the values.In a normal distribution, the
 median is the same as the mean and the mode, which is not the case for
 us.</p>
-<p>Compare to the mean, the median value is <code>2.56 * 10^-05</code>
-which is much lower that the mean which is at <code>XXX</code>. Indeed,
-A lower median mean,</p>
-<p><strong>Question 5.</strong> Repeat 1. with the <em>max</em> as the
-statistic of interest. What do you observe? Comment.</p>
-<pre><code>#&gt; [1] 0.074</code></pre>
-<p><strong>Answer 5:</strong> In this case the statistic of interest is
-the maximum, as a reminder we had the following observation: * unbiased
-estimator of var with mean boostraping : 0.6247326 * unbiased estimator
-of var with max boostraping : 0.07403403</p>
+<p>Compare to the mean, the median value is 2.563^{-5} which is much
+lower that the mean which is at 0.625. Indeed, if the distribution of
+data is skewed to the right, the mean is higher than the median. The
+median can be more descriptive of the data set, here we can understand
+that most of our data are lower in terms of quantity but there’s some
+high value which make the mean a higher.</p>
+<p><br> <strong>Question 5.</strong></p>
+<p>In question 5, we use a control structure as we did previously in
+point 1. Here we’re going to repeat with <span class="math inline">\(\hat{\theta}\)</span> the <em>max</em> as the
+statistic of interest and compare it to the mean from point 1.</p>
+<ul>
+<li>Unbiased estimator of var with mean boostraping : 0.625</li>
+<li>Unbiased estimator of var with max boostraping : 0.074</li>
+</ul>
 <p>We can observe that we have a decrease on the variance.</p>
-<table class="table" style="font-size: 16px; margin-left: auto; margin-right: auto;">
+<table class="table" style="font-size: 10px; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
@@ -5054,7 +5073,6 @@ max
 </tr>
 </tbody>
 </table>
-</div>
 
 
 
