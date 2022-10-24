@@ -15,7 +15,7 @@ load("maze.rds")
 
 # define as matrix
 matmaze = matrix(maze, ncol= sqrt(length(maze)) , byrow = T)
-matmaze <- matmaze[nrow(matmaze):1, ]
+#matmaze <- matmaze[nrow(matmaze):1, ]
 matmaze
 
 
@@ -31,7 +31,7 @@ plot(matmaze, las=1, col=c("black", "white"), key=NULL, main ="Maze")
 
 # plot starting and final position
 points(x=starting_pos[2], y=starting_pos[1], col = "darkgreen", pch = 16, cex = 5)
-points(x=final_pos[1], y=final_pos[2], col = "red", pch = 16, cex = 5)
+points(x=final_pos[2], y=final_pos[1], col = "red", pch = 16, cex = 5)
 
 # Solving the maze with right hand wall follower
 pos <- starting_pos # start with the starting position
@@ -42,8 +42,6 @@ right_vector = c(0,1)
 down_vector = c(1,0)
 left_vector = c(0,-1)
 up_vector = c(-1,0)
-
-
 
 
 

@@ -4,6 +4,7 @@ author: "Amina Mohammed (17301920), Joost Dijkstra (),Edward Tandia (17310806)"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
+
 ```{r, echo = FALSE, include = FALSE, message = FALSE}
 source(here::here("Setup.R"))
 ```
@@ -12,19 +13,8 @@ source(here::here("Setup.R"))
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#### Problem 1. statement
 
-Your boss would like that you analyze some business data. Let $X_1,\dots,X_n$ represents $n$ data points. Suppose you are interested in a statistic, say $\hat{\theta}$. In particular, we consider the mean, the median and the max. You are asked not only to report the statistics, but also an estimator of their variances.
-
-In order to accomplish this task, you will implement the bootstrap. The bootstrap is a well known method in statistics since Efron's seminal paper in 1979. The bootstrap is easy to implement and straightforward to use. There exist many different schemes for the bootstrap, we present the simplest form:
-
-1.  Compute the statistic on the sample: $\hat{\theta} = g(x_1,\dots,x_n)$.
-2.  Create a new sample $x_1^\ast,\dots,x_n^\ast$ by drawing data from the original sample **at random with replacement**. This new sample is called a *bootstrapped sample*.
-3.  Compute the statistic on the bootstrapped sample: $\hat{\theta}^\ast = g(x_1^\ast,\dots,x_n^\ast)$.
-4.  Repeat 2. and 3. $B$ times.
-5.  Compute the unbiased estimator of the variance: $$\frac{1}{B-1}\sum_{b=1}(\hat{\theta}^\ast_{b}-\hat{\theta})^2.$$
-
-___Answers Problem 1___
+___Answers of Problem 1___
 ```{r echo = FALSE, include = FALSE, message = FALSE}
 supermarket <- read.csv("supermarket_sales.csv")
 unitPrice <- as.matrix(supermarket[,7])
@@ -49,14 +39,13 @@ tableStatisticalvalue <- data.frame(Statistics= c("mean", "median", "max"), Valu
 ```
 ```{r echo=FALSE}
 kable(head(tableStatisticalvalue), booktabs = TRUE) %>%
-  kable_styling(font_size = 16)
+  kable_styling(font_size = 10)
 ```
 
 
-**Question 1.**  Load the dataset `supermarket_sales.csv`. We are interested in the column `Unit.price` and $\hat{\theta}$ is the mean. Using a `for` loop, compute the unbiased estimator of the variance with $B=1'000$.
-
-
-```{r Bootstrap with for loop mean}
+**Question 1.** 
+```{r echo = FALSE, include = FALSE, message = FALSE}
+#Bootstrap with for loop mean
 set.seed(123)
 têta_hat_loop <- rep(0,B)        #save the unbiased estimator of var
 
@@ -69,43 +58,55 @@ for (i in 1:B) {
 estimator_loop <-(1/(B-1))*(sum(têta_hat_loop- têta_hat_mean)^2)
 estimator_loop
 ```
-**Answer 1 :** The unbiased estimator of the variance with $B=1'000$ is *estimator_loop*
+After loading the dataset `supermarket_sales.csv`. We are interested in the column `Unit.price` where $\hat{\theta}$ is the mean. We used a`for` loop in order to compute the bootstrap and then compute the unbiased estimator of the variance with $B=1'000$ with the help of the following formula: $$\frac{1}{B-1}\sum_{b=1}(\hat{\theta}^\ast_{b}-\hat{\theta})^2.$$
+Feel free to observe the code that we did: 
 
-**Question 2. ** Propose an alternative solution without any control structure (i.e., no `for` loop, `while` loop, ...). You can for example construct a matrix and use `colMeans()` or `rowMeans()` functions.
+We've decide to fix the set seed for reproducibility at 123, and we find that the unbiased estimator of the variance is  `r estimator_loop`.
 
-```{r Bootstrapping without control structure}
-"library(bootstrap)
-matrice <- matrix(ncol = B,nrow=B)
+<br>
 
-#matrice <-mcopy paste the colum btimes
+**Question 2. ** 
 
-set.seed(123)
+```{r echo = FALSE, include = FALSE, message = FALSE }
+#Bootstrapping without control structure
+R=matrix(rep(unitPrice,length(unitPrice)),
+         ncol=length(unitPrice),
+         byrow=T)
+dfUnitePrice <- as.data.frame(t(R))
 
-#create a vector of teta_hat
-theta <- function(d){colMeans(d)} 
+set.seed(123)                     # Set seed for reproducibility
 
-#create a matrix with B time Unitprice
-boots_noloop <- bootstrap(unitPrice,B, theta)
+y <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size = length(x)))
 
-teta_hat_noloop <- boots_noloop$thetastar
+teta_hat_noloop <- colMeans(y)
 
-
-estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat)^2)
+estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat_mean)^2)
 estimator_noloop
-"
+
+```
+In question 2, we have proposed an alternative solution without control structure, we have decide to use the to construct a matrix BxB, and finally we apply the function `colMeans()` to have our $\hat{\theta}^\ast_{b}$. In this case too, we've used to fix the set seed for reproducibility, and we find that the unbiased estimator of the variance is  `r estimator_noloop`.
+ <br>
+ 
+**Question 3**.  To compare the performances of our solutions at point 1. and point 2. we decide to use two different metrics. In point a, we're profiling our implementation and observe the memory usage and the computation time.
+In point b, we're benchmarking our implementation and observe the result that we get.
+
+As a remember, we've as for mean the exact same value either if we use a structure control or not. What could make the difference can be the computation time.
+```{r echo = FALSE, include = FALSE, message = FALSE}
+
+tableStatisticalvalue <- data.frame(Statistics= c("mean with control structure", "mean without control structure"), Value=c(estimator_loop,estimator_noloop))
+
+```
+```{r echo=FALSE}
+kable(head(tableStatisticalvalue), booktabs = TRUE) %>%
+  kable_styling(font_size = 10)
 ```
 
-**Answer 2 :** The unbiased estimator of the variance with $B=1'000$ is *estimator_noloop*
-
-**Question 3**.  Compare the performances of your solutions at 1. and 2. by:
-
-    **a.** Profiling your two implementations. Use `profvis::profvis({...})`. Comment on the comparison, in particular the memory usage and computation time.  
+***a.1. Profiling Bootstrap with for loop***
 
 ```{r }
 #Profiling Bootstrap with for loop 
 
-# Profiling Bootstrap with a for loop 
-set.seed(123)
+set.seed(123)                             # Set seed for reproducibility
 
 profvis::profvis({
 têta_hat_loop <- rep(0,B)        #save the unbiased estimator of var
@@ -122,33 +123,52 @@ estimator_loop
 
 ```
 
+<br>
+<br>
+
+***a.2. Profiling Bootstrap with any control structure ***
 ```{r }
-"
 # Profiling Bootstrap without loop 
 set.seed(123)
 profvis::profvis({
 
+R=matrix(rep(unitPrice,length(unitPrice)),
+         ncol=length(unitPrice),
+         byrow=T)
+dfUnitePrice <- as.data.frame(t(R))
+
+set.seed(123)                     # Set seed for reproducibility
+
+y <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size = length(x)))
+
+teta_hat_noloop <- colMeans(y)
+
+estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat_mean)^2)
+estimator_noloop
+
   })
-"
 ```
-
-**Answer 3.a**:  The memory usage and computation time for the Bootstrap with control structure are : 
-* memory usage :
-* computation time:
-
-And the memory usage and computation time for Bootstrap without control structure are: 
-* memory usage :
-* computation time : 
-
-We take less time in the case of bootstrapping with / without control structure.
-
+<br>
 <br>
 
-**b.** Benchmarking your two implementations. Use `microbenchmark::microbenchmark({...},{...}). Comment the results.
+Thus, the memory usage and computation time for the Bootstrap **with control structure** are : <br>
+-Memory usage : 12 MB <br>
+-Computation time: 160 (ms) <br>
 
+And the memory usage and computation time for Bootstrap **without control structure** are: <br>
+-Memory usage : 32.9 MB <br>
+-Computation time : 130 (ms) <br>
+
+Based on the profiling, we can see that the the computation time without control structure is lower that the case of using a control structure, however, we use more memory. Thus it's to select between them, we have to do a trade off between memory usage and computation time.
+Furthermore, the cache function can help us to reduce the time of computation since it will be computed in the background. 
+<br>
+
+<br>
+***b. Benchmarking our two implementations. ***
 ```{r}
-"
+
 microbenchmark::microbenchmark({
+  set.seed(123)   
   têta_hat_loop <- rep(0,B)     
   for (i in 1:B) {
   
@@ -158,36 +178,72 @@ microbenchmark::microbenchmark({
 estimator_loop <-(1/(B-1))*(sum(têta_hat_loop- têta_hat_mean)^2)
 estimator_loop},
 
-{...})
-"
+{R=matrix(rep(unitPrice,length(unitPrice)),
+         ncol=length(unitPrice),
+         byrow=T)
+dfUnitePrice <- as.data.frame(t(R))
+
+set.seed(123)                     # Set seed for reproducibility
+
+y <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size = length(x)))
+
+teta_hat_noloop <- colMeans(y)
+
+estimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat_mean)^2)
+estimator_noloop})
 
 ```
-**Answer 3.b**:
+We can analyze the benchmarking between the two implementation. Indeed, the microbenchmark package measure the performance of both codes, it also asses and compare the speed of several functions that do the same thing. 
 
-**Question 4.**  Repeat 2. with the *median* as the statistic of interest. You are still required not use any control structures. There are no `colMedians()` or `rowMedians()` functions. Instead, use the `apply` function. Comment the results in comparison with the mean.
+As we can see, we have as an output summary statistics which describing how long the code took to run. This output gives us min, lq, mean, median, uq, and max describing the time it took to run the two function over the 100 iterations of each function call.
 
-```{r Bootstrap with apply function }
-set.seed(123)
+When we compare the performance in computation time codes, we can observe that the code with a control structure take longer than the one withtout control structure. Indeed, we can observe the two cases: 
 
-myBootFun <- function(d) {
-    boot(d, median, R = 1000)
-}
+**With control structure**, we have : <br>
+-Min : 163 (ms) <br>
+-Mean: 168.4 (ms) <br>
+-Max: 213 (ms) <br>
 
-têta_hat_apply <- sapply(unitPrice, function(x) myBootFun(x)$t0 )
+It means that on average the computation time takes 168.4 (ms), however it can reach 213 (ms) in the worse case scenario or reach 163 (ms) in the best case. 
+
+Remember that the computation time With control structure by using proofiling was at 160 (ms), which is actually good since it tooks lower than the average computation time.
+
+**Without control structure**, we have : <br>
+-Min : 71 (ms) <br>
+-Mean: 96.1 (ms) <br>
+-Max: 149 (ms) <br>
+
+In this case, the average the computation time takes 96.1 (ms), the best case scenario will take 71 (ms) and in worse case, we will have 149 (ms). 
+
+Remember that the computation time With control structure by using proofiling was at 130 (ms), which is actually close to the worse case scenario. The computation time of proofiling case are between to the upper quantile (123 (ms)) and the maximum (149 (ms))
+
+**Question 4.** 
+
+```{r echo = FALSE, include = FALSE, message = FALSE}
+#Bootstrap with apply function 
+set.seed(123)                        # Set seed for reproducibility
+#dfUnitePrice <- as.data.frame(t(R))
+
+y <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size = length(x)))
+
+têta_hat_apply <- median(y)
 
 estimator_apply <-(1/(B-1))*(sum(têta_hat_apply- têta_hat_median)^2)
 estimator_apply
 
 ```
+In question 4 we have to compute with $\hat{\theta}$ the *median* as the statistic of interest. In this case we will not either use a any control structures and neither no `colMedians()` or `rowMedians()` functions. Instead, we use the `apply` function and compare the result with the mean that we found
 
 Before anything else, let's remember that The median is sometimes used as opposed to the mean when there are outliers in the sequence that might skew the average of the values.In a normal distribution, the median is the same as the mean and the mode, which is not the case for us. 
 
-Compare to the mean, the median value is `XXX` which is higher/lower that the mean which is at `XXX`. Indeed, A lower median mean, 
+Compare to the mean, the median value is `r estimator_apply` which is much lower that the mean which is at `r estimator_loop`. Indeed, if the distribution of data is skewed to the right, the mean is higher than the median. The median can be more descriptive of the data set, here we can understand that most of our data are lower in terms of quantity but there's some high value which make the mean a higher. 
 
 
+<br>
+**Question 5.** 
 
-**Question 5.**  Repeat 1. with the *max* as the statistic of interest. What do you observe? Comment.
-```{r Bootstrap with for loop max }
+```{r  echo = FALSE, include = FALSE, message = FALSE }
+#Bootstrap with for loop max
 
 set.seed(123)
 têta_hat_loop_max <- rep(0,B)        #save the unbiased estimator of var
@@ -202,20 +258,30 @@ estimator_loop_max <-(1/(B-1))*(sum(têta_hat_loop_max- têta_hat_max)^2)
 estimator_loop_max
 ```
 
-**Answer 5:** In this case the statistic of interest is the maximum, as a reminder we had the following observation:
-* unbiased estimator of var with mean boostraping : 0.6247326
-* unbiased estimator of var with max boostraping : 0.07403403
+In question 5, we use a control structure as we did previously in point 1. Here we're going to repeat with $\hat{\theta}$ the *max* as the statistic of interest and compare it to the mean from point 1.
 
-We can observe that we have a decrease on the variance. 
+- Unbiased estimator of var with mean boostraping : `r estimator_loop`
+- Unbiased estimator of var with max boostraping : `r estimator_loop_max`
+
 
 ```{r echo = FALSE, include = FALSE, message = FALSE}
 df_answer5 <- data.frame (Statistic  = c("mean", "max"),
-                  "têta" = c(têta_hat_mean, têta_hat_max),
+                  "Theoretical têta" = c(têta_hat_mean, têta_hat_max),
                   "Unbiased Estimator" = c(estimator_loop,estimator_loop_max)
                   )
 ```
 ```{r echo=FALSE}
 df_answer5 %>%
   kable(booktabs = TRUE) %>%
-  kable_styling(font_size =16)
+  kable_styling(font_size =10)
 ```
+
+We can observe that we have a huge decrease on the variance.
+
+___Answers of Problem 2___
+
+The email have been sended without issue. 
+
+___Answers of Problem 3___
+
+For the maze, we have found the following GIF. 
