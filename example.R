@@ -22,7 +22,7 @@ df_client <- data.frame(
   last_name = c("Orso", "Shemendyuk"),
   dob = c("01/01/1990", "01/01/1995"),
   date_since_client = c("01/01/2021", "30/10/2020"),
-  email_adress = c("ptdshec@gmail.com", "ptdshec@gmail.com")
+  email_adress = c("asdfs@gmail.com", "ptdshec@gmail.com")
 )
 # compute number of days per client
 df_client$nbr_days_since_client <- difftime(Sys.Date(), as.Date(df_client[, "date_since_client"], format = "%d/%m/%Y"))

@@ -4977,10 +4977,10 @@ mean without control structure
 <script type="application/json" data-for="htmlwidget-4bf2c819053c6b3252a5">{"x":{"message":{"prof":{"time":[1,1,1,2,2,2,2,3,3,3,3,3,4,4,4,4,4,5,5,5,5,5,5,6,6,6,7,7,7,7,8,8,8,8,9,9,9,9,10,10,10,10,11,11,12,12,13,13],"depth":[3,2,1,4,3,2,1,5,4,3,2,1,5,4,3,2,1,6,5,4,3,2,1,3,2,1,4,3,2,1,4,3,2,1,4,3,2,1,4,3,2,1,2,1,2,1,2,1],"label":["as.vector","as.data.frame.matrix","rmarkdown::render","<GC>","aperm.default","apply","rmarkdown::render","sample.int","sample","FUN","apply","rmarkdown::render","sample.int","sample","FUN","apply","rmarkdown::render","<GC>","sample.int","sample","FUN","apply","rmarkdown::render","lengths","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","<GC>","array","apply","rmarkdown::render","colMeans","rmarkdown::render","colMeans","rmarkdown::render","colMeans","rmarkdown::render"],"filenum":[null,null,null,null,null,1,null,null,1,null,1,null,null,1,null,1,null,null,null,1,null,1,null,null,1,null,null,null,1,null,null,null,1,null,null,null,1,null,null,null,1,null,1,null,1,null,1,null],"linenum":[null,null,null,null,null,12,null,null,12,null,12,null,null,12,null,12,null,null,null,12,null,12,null,null,12,null,null,null,12,null,null,null,12,null,null,null,12,null,null,null,12,null,14,null,14,null,14,null],"memalloc":[42.8018417358398,42.8018417358398,42.8018417358398,49.5027542114258,49.5027542114258,49.5027542114258,49.5027542114258,49.5336608886719,49.5336608886719,49.5336608886719,49.5336608886719,49.5336608886719,57.2362670898438,57.2362670898438,57.2362670898438,57.2362670898438,57.2362670898438,63.998291015625,63.998291015625,63.998291015625,63.998291015625,63.998291015625,63.998291015625,57.9637832641602,57.9637832641602,57.9637832641602,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,60.7334213256836,53.0975952148438,53.0975952148438,53.0975952148438,53.0975952148438,60.7583541870117,60.7583541870117,60.7583541870117,60.7583541870117,60.7583541870117,60.7583541870117],"meminc":[0,0,0,6.70091247558594,0,0,0,0.0309066772460938,0,0,0,0,7.70260620117188,0,0,0,0,6.76202392578125,0,0,0,0,0,-6.03450775146484,0,0,2.76963806152344,0,0,0,0,0,0,0,0,0,0,0,-7.63582611083984,0,0,0,7.66075897216797,0,0,0,0,0],"filename":[null,null,null,null,null,"<expr>",null,null,"<expr>",null,"<expr>",null,null,"<expr>",null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,null,"<expr>",null,null,null,"<expr>",null,null,null,"<expr>",null,null,null,"<expr>",null,null,null,"<expr>",null,"<expr>",null,"<expr>",null,"<expr>",null]},"interval":10,"files":[{"filename":"<expr>","content":"# Profiling Bootstrap without loop \nset.seed(123)\nprofvis::profvis({\n\nR=matrix(rep(unitPrice,length(unitPrice)),\n         ncol=length(unitPrice),\n         byrow=T)\ndfUnitePrice <- as.data.frame(t(R))\n\nset.seed(123)                     # Set seed for reproducibility\n\ny <- apply(dfUnitePrice, MARGIN = 2, function(x) sample(x, replace = TRUE, size = length(x)))\n\nteta_hat_noloop <- colMeans(y)\n\nestimator_noloop <-(1/(B-1))*(sum(teta_hat_noloop- têta_hat_mean)^2)\nestimator_noloop\n\n  })","normpath":"<expr>"}],"prof_output":"/var/folders/pc/r3djyb2j56l_dvg9gq96vz2w0000gn/T//Rtmpwb8kQu/fileac639b73009.prof","highlight":{"output":["^output\\$"],"gc":["^<GC>$"],"stacktrace":["^\\.\\.stacktraceo(n|ff)\\.\\.$"]},"split":"h"}},"evals":[],"jsHooks":[]}</script>
 <p><br> <br></p>
 <p>Thus, the memory usage and computation time for the Bootstrap
-<strong>with control</strong> structure are : <br> -Memory usage : 12 MB
+<strong>with control structure</strong> are : <br> -Memory usage : 12 MB
 <br> -Computation time: 160 (ms) <br></p>
 <p>And the memory usage and computation time for Bootstrap
-<strong>without control</strong> structure are: <br> -Memory usage :
+<strong>without control structure</strong> are: <br> -Memory usage :
 32.9 MB <br> -Computation time : 130 (ms) <br></p>
 <p>Based on the profiling, we can see that the the computation time
 without control structure is lower that the case of using a control
@@ -5005,8 +5005,26 @@ the same thing.</p>
 describing how long the code took to run. This output gives us min, lq,
 mean, median, uq, and max describing the time it took to run the two
 function over the 100 iterations of each function call.</p>
-<p>When we compare both codes, we can observe that the spreed is larger
-in the for loop.</p>
+<p>When we compare the performance in computation time codes, we can
+observe that the code with a control structure take longer than the one
+withtout control structure. Indeed, we can observe the two cases:</p>
+<p><strong>With control structure</strong>, we have : <br> -Min : 163
+(ms) <br> -Mean: 168.4 (ms) <br> -Max: 213 (ms) <br></p>
+<p>It means that on average the computation time takes 168.4 (ms),
+however it can reach 213 (ms) in the worse case scenario or reach 163
+(ms) in the best case.</p>
+<p>Remember that the computation time With control structure by using
+proofiling was at 160 (ms), which is actually good since it tooks lower
+than the average computation time.</p>
+<p><strong>Without control structure</strong>, we have : <br> -Min : 71
+(ms) <br> -Mean: 96.1 (ms) <br> -Max: 149 (ms) <br></p>
+<p>In this case, the average the computation time takes 96.1 (ms), the
+best case scenario will take 71 (ms) and in worse case, we will have 149
+(ms).</p>
+<p>Remember that the computation time With control structure by using
+proofiling was at 130 (ms), which is actually close to the worse case
+scenario. The computation time of proofiling case are between to the
+upper quantile (123 (ms)) and the maximum (149 (ms))</p>
 <p><strong>Question 4.</strong></p>
 <p>In question 4 we have to compute with <span class="math inline">\(\hat{\theta}\)</span> the <em>median</em> as the
 statistic of interest. In this case we will not either use a any control

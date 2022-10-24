@@ -160,11 +160,11 @@ estimator_noloop
 <br>
 <br>
 
-Thus, the memory usage and computation time for the Bootstrap **with control** structure are : <br>
+Thus, the memory usage and computation time for the Bootstrap **with control structure** are : <br>
 -Memory usage : 12 MB <br>
 -Computation time: 160 (ms) <br>
 
-And the memory usage and computation time for Bootstrap **without control** structure are: <br>
+And the memory usage and computation time for Bootstrap **without control structure** are: <br>
 -Memory usage : 32.9 MB <br>
 -Computation time : 130 (ms) <br>
 
@@ -206,7 +206,25 @@ We can analyze the benchmarking between the two implementation. Indeed, the micr
 
 As we can see, we have as an output summary statistics which describing how long the code took to run. This output gives us min, lq, mean, median, uq, and max describing the time it took to run the two function over the 100 iterations of each function call.
 
-When we compare both codes, we can observe that the spreed is larger in the for loop. 
+When we compare the performance in computation time codes, we can observe that the code with a control structure take longer than the one withtout control structure. Indeed, we can observe the two cases: 
+
+**With control structure**, we have : <br>
+-Min : 163 (ms) <br>
+-Mean: 168.4 (ms) <br>
+-Max: 213 (ms) <br>
+
+It means that on average the computation time takes 168.4 (ms), however it can reach 213 (ms) in the worse case scenario or reach 163 (ms) in the best case. 
+
+Remember that the computation time With control structure by using proofiling was at 160 (ms), which is actually good since it tooks lower than the average computation time.
+
+**Without control structure**, we have : <br>
+-Min : 71 (ms) <br>
+-Mean: 96.1 (ms) <br>
+-Max: 149 (ms) <br>
+
+In this case, the average the computation time takes 96.1 (ms), the best case scenario will take 71 (ms) and in worse case, we will have 149 (ms). 
+
+Remember that the computation time With control structure by using proofiling was at 130 (ms), which is actually close to the worse case scenario. The computation time of proofiling case are between to the upper quantile (123 (ms)) and the maximum (149 (ms))
 
 **Question 4.** 
 
@@ -254,11 +272,10 @@ In question 5, we use a control structure as we did previously in point 1. Here 
 - Unbiased estimator of var with mean boostraping : `r estimator_loop`
 - Unbiased estimator of var with max boostraping : `r estimator_loop_max`
 
-We can observe that we have a decrease on the variance. 
 
 ```{r echo = FALSE, include = FALSE, message = FALSE}
 df_answer5 <- data.frame (Statistic  = c("mean", "max"),
-                  "têta" = c(têta_hat_mean, têta_hat_max),
+                  "Theoretical têta" = c(têta_hat_mean, têta_hat_max),
                   "Unbiased Estimator" = c(estimator_loop,estimator_loop_max)
                   )
 ```
@@ -267,3 +284,5 @@ df_answer5 %>%
   kable(booktabs = TRUE) %>%
   kable_styling(font_size =10)
 ```
+
+We can observe that we have a decrease on the variance. Since we observe the Unbiased estimator of var with max boostraping, we are looking for the most 
