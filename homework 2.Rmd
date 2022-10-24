@@ -490,6 +490,8 @@ while(any(pos != final_pos)){
 }
 ```
 
+<img src="test.gif"/>
+
 **Question 3.** : Showing from performing both methods, the left hand method is in this case faster. With the right hand having 154 iterations and the left hand method having 128.
 
 **Question 4.** : Reversing the turn the methods make after it checked for a right wall (right hand method) or left wall (left hand method) will result in both methods not reaching the end.
