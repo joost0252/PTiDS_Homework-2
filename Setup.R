@@ -6,7 +6,8 @@ packages <- c(
   "knitr", "readr", "dplyr",
   "here", # for the project's organization
   "tidyverse", "kableExtra", "microbenchmark",
-  "ggplot2"
+  "ggplot2", "plot.matrix", "rstan", "quanteda",
+  "quanteda.textstats", "lexicon", "tidytext", "reshape2"
 )
 
 purrr::walk(packages, library, character.only = TRUE)
