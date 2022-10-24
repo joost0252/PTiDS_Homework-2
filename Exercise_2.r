@@ -36,7 +36,7 @@ df <- data.frame(Emails,Client_id,First_name,Last_name,Gender,Nationality,Hobby,
 
 # fusion first_name and last_name
 df$Full_name <- paste(df$First_name, df$Last_name, sep = " ")
-
+View(df)
 #load a premade dataset for ggplot
 globus_data <- mtcars
 colnames(globus_data)<-c('Calls','Data','Duration in sec','Costs')
@@ -58,7 +58,7 @@ plot_html <-
 
 ##creatation of reactive text  function
 reactive_func <- function (full_name_id) {
-        if (full_name_id[,8]>= 25 && full_name_id[,12] >= 50000) {
+        if (full_name_id[,8] >= 25 && full_name_id[,12] >= 50000) {
             proposition_f <- 'Last but not least, you are eligble for a 10% discount on your next purcharse.'
             }
         else if (full_name_id[,8] <= 28 && full_name_id[,12]<= 30000){
@@ -68,16 +68,19 @@ reactive_func <- function (full_name_id) {
             proposition_f <- 'Last but not least, you are not eligble for any discount on your next purcharse.'
             }
     return(proposition_f)
-     }
+}
+
 
 # define a given client_id_i (this would compose your iterator in a for loop to send to all client)
 
 for (i in 1:nrow(df)){
-    full_name_id <- df[i,] # i ici
+    full_name_id <-df[i,] # i ici
 
     # define greeting
     greeting <-  ifelse(df[i, "Gender"] == "male", "Mr.", "Mrs.")
-    
+    # define names_cl
+    names_cl <- df[i,13]
+    #put body_txt in a funtion and looop this funct
     # header
     img_f <- 'globus_img.png'
     globus<-add_image(file = img_f, width = 200)
@@ -87,10 +90,9 @@ for (i in 1:nrow(df)){
     ))
 
     # emails templates
-
     body_txt <- md(
         c(
-            glue('Dear {greeting} {df[i,13]}'), #13 for full name col # i ici aussi
+            glue('Dear {greeting} {names_cl}'), 
             '',
             glue('This mail is a reminder that you need to check the 
             monthly costs/calls record attached below. You can observe that your corsts decreased with 
@@ -102,7 +104,8 @@ for (i in 1:nrow(df)){
             glue('Please let me know if you have any question.'),
             '',
             glue('Best regards, Gourp F')
-            ))
+        ))
+    
 
 
     # footer
@@ -132,11 +135,11 @@ for (i in 1:nrow(df)){
         )
     )
     )
-    email_final
+    print(email_final)
 }
 
+
 # view mail html
-email_final
 
 # create identification smtp protocol (only to be run once)
 #create_smtp_creds_key(
@@ -146,7 +149,7 @@ email_final
 #)
 
 # extract email adress
-email_adress <- df$Emails
+email_adress <- df_test$Emails
 
 # send email
 email_final %>%
@@ -157,3 +160,5 @@ email_final %>%
     credentials = creds_key('outlook')
   )
 
+# Create another df_test  with 3 clients and test loop 
+df_test <- df[c(3:5),]
